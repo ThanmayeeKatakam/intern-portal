@@ -108,7 +108,13 @@
 
 
   <script>
-  fetch('http://localhost:3000/intern')
+  // fetch('http://localhost:3000/intern')
+    const BASE_URL = window.location.hostname.includes('localhost')
+  ? 'http://localhost:3000'
+  : 'https://intern-portal-server.onrender.com';
+
+fetch(`${BASE_URL}/intern`)
+
     .then(response => response.json())
     .then(data => {
       document.getElementById("internName").innerText = `Welcome, ${data.name}`;
@@ -163,3 +169,4 @@
 
 </body>
 </html>
+
