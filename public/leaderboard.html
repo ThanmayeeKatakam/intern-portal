@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Leaderboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+      <a class="navbar-brand" href="#">Intern Portal</a>
+      
+    </div>
+  </nav>
+
+  <div class="container py-5">
+    
+    <h2 class="text-center mb-4">🏆 Leaderboard</h2>
+
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover text-center">
+        <thead class="table-dark">
+          <tr>
+            <th>Rank</th>
+            <th>Name</th>
+            <th>Referral Code</th>
+            <th>Donations (₹)</th>
+          </tr>
+        </thead>
+        <tbody id="leaderboard-body">
+          <!-- Data will load here -->
+        </tbody>
+      </table>
+    </div>
+
+     <div class="container mt-3 d-flex justify-content-end">
+  <a href="dashboard.html" class="btn btn-outline-dark d-inline-flex align-items-center gap-1 shadow-sm">
+    <i class="bi bi-arrow-left-circle-fill"></i> Back to Dashboard
+  </a>
+</div>
+
+
+  </div>
+
+  
+
+
+  <script>
+  fetch('/leaderboard')
+    .then(response => response.json())
+    .then(data => {
+      const table = document.getElementById('leaderboard-body');
+      data.forEach((intern, index) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${index + 1}</td>
+          <td>${intern.name}</td>
+          <td>${intern.referralCode}</td>
+          <td>${intern.totalDonations}</td>
+        `;
+        table.appendChild(row);
+      });
+    })
+    .catch(error => console.error('Error loading leaderboard:', error));
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Intern Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="public/css/style.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+</head>
+<body class="bg-light">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+      <a class="navbar-brand" href="#">Intern Portal</a>
+    </div>
+    <div class="container mt-4 d-flex justify-content-end">
+  <a href="login.html" class="btn btn-outline-light d-inline-flex align-items-center gap-1 shadow-sm">
+    <i class="bi bi-arrow-left-circle-fill"></i> LogOut
+  </a>
+</div>
+<br>
+  </nav>
+
+  <div class="container py-5">
+    <div class="row mb-4">
+      <div class="col text-center">
+        <h2 id="internName">Welcome, Jane Doe</h2>
+        <p>Referral Code: <strong id="referralCode">janedoe2025</strong></p>
+        <h4>Total Donations Raised: ₹<span id="donationAmount">0</span></h4>
+      </div>
+    </div>
+
+    <div class="row" id="rewardsSection">
+  <h3 class="text-center mb-4">🏆 Rewards & Unlockables</h3>
+
+  <div class="col-md-4">
+    <div class="card text-center p-3" id="bronzeReward">
+      <h5>🎉 Bronze Badge</h5>
+      <p>Raise ₹500+ to unlock</p>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="card text-center p-3" id="goldReward">
+      <h5>🥇 Gold Badge</h5>
+      <p>Raise ₹2000+ to unlock</p>
+    </div>
+  </div>
+
+
+  <div class="col-md-4">
+    <div class="card text-center p-3" id="silverReward">
+      <h5>🥈 Silver Badge</h5>
+      <p>Raise ₹1000+ to unlock</p>
+    </div>
+  </div>
+</div>
+  <br>
+
+<div class="row justify-content-center mt-3">
+
+  <div class="col-md-6 col-lg-4 mb-4">
+  <div class="card shadow-lg border-0 p-3 text-center hover-effect">
+    <img src="images/rewards.png" alt="Rewards" class="img-fluid mb-3" style="max-height:835px">
+    <h5 class="text-dark bold">Unlock Rewards</h5>
+    <p class="text-muted mb-0">Earn badges and gift hampers as you raise more donations!</p>
+  </div>
+</div>
+
+
+
+  <div class="col-md-3 col-lg-0">
+    <a href="leaderboard.html" class=" hover-effect text-decoration-none">
+      <div class="card shadow-lg border-0 hover-effect text-center p-3">
+        <img src="images/l.png" alt="Leaderboard" class="img-fluid rounded mb-3" style="max-height:750px; object-fit: cover;">
+        <h5 class="text-dark fw-semibold btn-light btn border btn-outline-primary rounded p-3">View Leaderboard</h5>
+        <!-- <p class="text-muted">Click here to check rank among others</p> -->
+      </div>
+    </a>
+  </div>
+
+  <div class="col-md-6 col-lg-4 mb-4">
+  <div class="card shadow-lg border-0 p-4 text-center hover-effect">
+    <br>   <img src="images/referral.png" alt="Referral Code" class="img-fluid mb-3" style="max-height: 148px;">
+    
+    <h5 class="text-primary">Your Referral Code</h5>
+    <p class="text-muted">Share this code with friends:</p>
+
+    <div class="input-group justify-content-center" style="max-width: 280px; margin: auto;">
+      <input type="text" id="referralText" class="form-control text-center fw-semibold border-end-0" value="janedoe2025" readonly>
+      <button id="copyBtn" onclick="copyReferralCode()" class="btn btn-outline-secondary border">Copy
+        <i id="copyIcon" class="bi bi-clipboard"></i>
+      </button>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+</div>
+
+
+
+
+
+  <script>
+  fetch('http://localhost:3000/intern')
+    .then(response => response.json())
+    .then(data => {
+      document.getElementById("internName").innerText = `Welcome, ${data.name}`;
+      document.getElementById("referralCode").innerText = data.referralCode;
+      document.getElementById("donationAmount").innerText = data.totalDonations;
+
+      // Dynamic reward unlocking
+      const total = data.totalDonations;
+
+      if (total >= 500) {
+        document.getElementById("bronzeReward").classList.add("bg-light","border-success", "shadow","hover-effect");
+      }
+      if (total >= 1000) {
+        document.getElementById("silverReward").classList.add("bg-light","border-info", "shadow","hover-effect");
+      }
+      if (total >= 2000) {
+        document.getElementById("goldReward").classList.add("bg-light","border-warning", "shadow","hover-effect");
+      }
+    })
+    .catch(error => {
+      console.error("Failed to fetch intern data:", error);
+    });
+</script>
+<script>
+  function copyReferralCode() {
+    const input = document.getElementById("referralText");
+    const btnIcon = document.getElementById("copyIcon");
+
+    // Copy the text
+    navigator.clipboard.writeText(input.value).then(() => {
+      // Change icon to tick
+      btnIcon.classList.remove("bi-clipboard");
+      btnIcon.classList.add("bi-check-lg");
+
+      // Change input background to green
+      input.classList.add("bg-success", "text-white");
+
+      // Revert everything after 2 seconds
+      setTimeout(() => {
+        btnIcon.classList.remove("bi-check-lg");
+        btnIcon.classList.add("bi-clipboard");
+
+        input.classList.remove("bg-success", "text-white");
+      }, 2000);
+    });
+  }
+</script>
+
+
+
+
+
+</body>
+</html>
